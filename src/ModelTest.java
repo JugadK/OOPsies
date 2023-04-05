@@ -1,3 +1,6 @@
+import java.util.HashMap;
+import java.util.Map;
+
 public class ModelTest
 {
 
@@ -10,8 +13,11 @@ public class ModelTest
 
     // Maybe for data structure a HashMap of Arraylists? Where each "A1, A2" can be the key and the value is the ArrayList holding the amount of marbles. It could just be an int too.
 
-    public Model()
+
+    private Map<String, Integer> hold;
+    public ModelTest()
     {
+        hold = new HashMap<>();
 
     }
 
