@@ -6,4 +6,5 @@
  *
  */
 module OOPsies {
+    requires java.desktop;
 }
