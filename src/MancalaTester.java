@@ -2,7 +2,7 @@ public class MancalaTester
 {
     public static void main(String[] args)
     {
-        System.out.println("Yuh");
-        System.out.println("test");
+        MancalaModel model = new MancalaModel();
+        MancalaView view = new MancalaView(model);
     }
 }
