@@ -1,4 +1,11 @@
+package oop;
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
+import oop.MancalaModel.MancalaSlot;
+import oop.MancalaModel.Player;
+
 import java.awt.*;
 
 // This IS a JFrame
@@ -9,11 +16,18 @@ public class MancalaView extends JFrame
     public MancalaView(MancalaModel model)
     {
         this.model = new MancalaModel();
-
+        
         setSize(2000, 800);
 
-        Board board = new Board();
+        Board board = new Board(this.model.getBoard());
         add(board, BorderLayout.CENTER);
+        
+        model.addSlotChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                board.repaint();
+            }
+        });
 
 
         Goal goal1 = new Goal();
@@ -23,11 +37,10 @@ public class MancalaView extends JFrame
         add(goal2, BorderLayout.EAST);
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        
         setVisible(true);
 
     }
-
-
 
 }
 
