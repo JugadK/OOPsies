@@ -70,19 +70,19 @@ public class MancalaModel
     	
 		 board = new int[BOARD_SIZE];
 		 
-		 board[MancalaSlot.A1.getIndex()] = 3;
+		 board[MancalaSlot.A1.getIndex()] = 8;
 		 board[MancalaSlot.A2.getIndex()] = 3;
 		 board[MancalaSlot.A3.getIndex()] = 3;
 		 board[MancalaSlot.A4.getIndex()] = 3;
 		 board[MancalaSlot.A5.getIndex()] = 3;
-		 board[MancalaSlot.A6.getIndex()] = 3;
+		 board[MancalaSlot.A6.getIndex()] = 0;
 		 
 		 // This will be the score for Player A. I'm thinking 
 		 //about just incrementing and then when it gets to 6 and then you +1, it will be 7 so it'll go to Player A
 		 
 		 board[MancalaSlot.A7.getIndex()] = 0;
 		 
-		 board[MancalaSlot.B1.getIndex()] = 3;
+		 board[MancalaSlot.B1.getIndex()] = 11;
 		 board[MancalaSlot.B2.getIndex()] = 3;
 		 board[MancalaSlot.B3.getIndex()] = 3;
 		 board[MancalaSlot.B4.getIndex()] = 3;
@@ -99,11 +99,15 @@ public class MancalaModel
     
 	
 	// Returns ending slot
-	public MancalaSlot seedStones(MancalaSlot slot) {
+	public void seedStones(MancalaSlot slot) {
 		
 		
-		System.out.println("Hello");
 		Player player = currPlayer;
+		
+		if(player == Player.PLAYERB && slot.getIndex() < 7)
+			return;
+		else if(player == Player.PLAYERA && slot.getIndex() >= 7)
+			return;
 		
     	int index = slot.getIndex();
     	
@@ -116,10 +120,7 @@ public class MancalaModel
     		
     		if(index < 0)
     			index = BOARD_SIZE-1;
-    			
-    		
-    		System.out.println(index % 14);
-    		
+    			    		
     		if(index == MancalaSlot.B7.getIndex() && player == Player.PLAYERA ||
     		   index == MancalaSlot.A7.getIndex() && player == Player.PLAYERB) {
     			continue;
@@ -129,14 +130,14 @@ public class MancalaModel
     		stones--;
     	}
     	
-    	notifySlotListeners();
     	
     	MancalaSlot mSlot = MancalaSlot.getEnum(index);
     	
-    	handlePlayerSwap(mSlot);
-    	    		
+    	handleEmptyLand(mSlot);
     	
-    	return mSlot;
+    	notifySlotListeners();
+
+    	handlePlayerSwap(mSlot);
 	}
 	
 	
@@ -146,9 +147,31 @@ public class MancalaModel
 			this.currPlayer = Player.PLAYERB;
 		else if (currPlayer == Player.PLAYERB && slot != MancalaSlot.B7)
 			this.currPlayer = Player.PLAYERA;
-		
-		
-		
+	}
+	
+	public void handleEmptyLand(MancalaSlot slot) {
+	    int index = slot.getIndex();
+	    int stones = board[index];
+	    Player player = currPlayer;
+	    
+	    if (stones == 1 && index != MancalaSlot.A7.getIndex() && index != MancalaSlot.B7.getIndex()) {
+	    	
+	    	System.out.println("dfasdfa");
+	    	
+	        if (player == Player.PLAYERA && index < 7 && board[BOARD_SIZE - index - 2] > 0) {
+	        	
+	            // move stone from opposite pit to player A's mancala
+	            board[MancalaSlot.A7.getIndex()] += board[BOARD_SIZE - index - 2] + 1;
+	            board[BOARD_SIZE - index - 2] = 0;
+	            board[index] = 0;
+	        } else if (player == Player.PLAYERB && index > 6 && board[BOARD_SIZE - index] > 0) {
+	        	
+	            // move stone from opposite pit to player B's mancala
+	            board[MancalaSlot.B7.getIndex()] += board[BOARD_SIZE - index] + 1;
+	            board[BOARD_SIZE - index] = 0;
+	            board[index] = 0;
+	        }
+	    }
 	}
 	
 	public void notifySlotListeners() {
