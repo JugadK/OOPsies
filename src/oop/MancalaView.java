@@ -7,11 +7,15 @@ import oop.MancalaModel.MancalaSlot;
 import oop.MancalaModel.Player;
 
 import java.awt.*;
+import java.awt.event.MouseListener;
+import java.util.Arrays;
 
 // This IS a JFrame
 public class MancalaView extends JFrame
 {
     private MancalaModel model;
+    
+    Board board;
 
     public MancalaView(MancalaModel model)
     {
@@ -19,15 +23,9 @@ public class MancalaView extends JFrame
         
         setSize(2000, 800);
 
-        Board board = new Board(this.model.getBoard());
-        add(board, BorderLayout.CENTER);
+        this.board = new Board(this.model.getBoard());
         
-        model.addSlotChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                board.repaint();
-            }
-        });
+        add(board, BorderLayout.CENTER);
 
 
         Goal goal1 = new Goal();
@@ -39,7 +37,12 @@ public class MancalaView extends JFrame
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         
         setVisible(true);
-
+    }
+    
+    
+    public void addMancalaHoleListener(MouseListener[] listeners) {
+    	
+    	this.board.addMancalaHoleListeners(listeners);
     }
 
 }

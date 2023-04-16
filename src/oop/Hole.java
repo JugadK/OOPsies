@@ -1,6 +1,7 @@
 package oop;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseListener;
 import java.awt.geom.Ellipse2D;
 
 public class Hole extends JComponent
@@ -11,6 +12,10 @@ public class Hole extends JComponent
 
     public Hole(int stones)
     {
+    	this.stones = stones;
+    }
+    
+    public void updateStones(int stones) {
     	this.stones = stones;
     }
 
@@ -26,7 +31,7 @@ public class Hole extends JComponent
         
         int x = 40;
         int y = 50;
-                
+                        
         for(int i = 0; i < stones && stonesAdded < stones; i++) {
         	for(int j = 0; j < 5 && stonesAdded < stones; j++) {
         		 g2.setColor(Color.GRAY);

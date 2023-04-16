@@ -53,18 +53,20 @@ public class MancalaModel
         }
     }
 
-
-    //private Map<String, Integer> hold;
 	
 	final static int BOARD_SIZE = 14;
     
     private int[] board;
     private ArrayList<ChangeListener> slotListeners;   
     
+    Player currPlayer;
+    
     public MancalaModel() 
-    {
+    { 
 		
-    	this.slotListeners = new ArrayList<>();
+    	 this.slotListeners = new ArrayList<>();
+    	 
+    	 this.currPlayer = Player.PLAYERA;
     	
 		 board = new int[BOARD_SIZE];
 		 
@@ -75,9 +77,9 @@ public class MancalaModel
 		 board[MancalaSlot.A5.getIndex()] = 3;
 		 board[MancalaSlot.A6.getIndex()] = 3;
 		 
-         // This will be the score for Player A. I'm thinking 
-	     //about just incrementing and then when it gets to 6 and then you +1, it will be 7 so it'll go to Player A
-	 
+		 // This will be the score for Player A. I'm thinking 
+		 //about just incrementing and then when it gets to 6 and then you +1, it will be 7 so it'll go to Player A
+		 
 		 board[MancalaSlot.A7.getIndex()] = 0;
 		 
 		 board[MancalaSlot.B1.getIndex()] = 3;
@@ -87,7 +89,7 @@ public class MancalaModel
 		 board[MancalaSlot.B5.getIndex()] = 3;
 		 board[MancalaSlot.B6.getIndex()] = 3;
 		 
-		 // Player B score
+			 // Player B score
 		 board[MancalaSlot.B7.getIndex()] = 0;
     }
     
@@ -97,7 +99,11 @@ public class MancalaModel
     
 	
 	// Returns ending slot
-	public MancalaSlot seedStones(MancalaSlot slot, MancalaModel.Player player) {
+	public MancalaSlot seedStones(MancalaSlot slot) {
+		
+		
+		System.out.println("Hello");
+		Player player = currPlayer;
 		
     	int index = slot.getIndex();
     	
@@ -106,7 +112,13 @@ public class MancalaModel
     	
     	while(stones > 0) {
     		
-    		index = (index + 1) % MancalaModel.BOARD_SIZE;
+    		index = (index - 1);
+    		
+    		if(index < 0)
+    			index = BOARD_SIZE-1;
+    			
+    		
+    		System.out.println(index % 14);
     		
     		if(index == MancalaSlot.B7.getIndex() && player == Player.PLAYERA ||
     		   index == MancalaSlot.A7.getIndex() && player == Player.PLAYERB) {
@@ -117,12 +129,34 @@ public class MancalaModel
     		stones--;
     	}
     	
-    	ChangeEvent event = new ChangeEvent(this);
+    	notifySlotListeners();
+    	
+    	MancalaSlot mSlot = MancalaSlot.getEnum(index);
+    	
+    	handlePlayerSwap(mSlot);
+    	    		
+    	
+    	return mSlot;
+	}
+	
+	
+	public void handlePlayerSwap(MancalaSlot slot) {
+		
+		if(currPlayer == Player.PLAYERA && slot != MancalaSlot.A7) 
+			this.currPlayer = Player.PLAYERB;
+		else if (currPlayer == Player.PLAYERB && slot != MancalaSlot.B7)
+			this.currPlayer = Player.PLAYERA;
+		
+		
+		
+	}
+	
+	public void notifySlotListeners() {
+		
+		ChangeEvent event = new ChangeEvent(this);
     	for(ChangeListener l : slotListeners) {
     		l.stateChanged(event);
     	}
-    	
-    	return MancalaSlot.getEnum(index);
 	}
 	
 	public void addSlotChangeListener(ChangeListener listener) {
