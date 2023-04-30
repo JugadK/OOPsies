@@ -1,5 +1,7 @@
 package oop;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Arrays;
@@ -22,15 +24,24 @@ public class MancalaController
 		
 		view.addMancalaHoleListener(createMouseListeners());
 		
-		 model.addSlotChangeListener(new ChangeListener() {
-	            @Override
-	            public void stateChanged(ChangeEvent e) {
-	            	System.out.println(Arrays.toString(model.getBoard()));
-	                view.board.paintHoles(model.getBoard());
-	                view.board.repaint();
-	            }
-	        });
-		
+		model.addSlotChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+            	System.out.println(Arrays.toString(model.getBoard()));
+                view.board.paintHoles(model.getBoard());
+                view.board.repaint();
+            }
+        });
+	
+		view.addUndoButton(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				model.undo();
+			}
+		});
+		 
 	}
 	
 	

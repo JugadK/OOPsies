@@ -1,8 +1,10 @@
 package oop;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
+import java.util.Stack;
 
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
@@ -61,6 +63,11 @@ public class MancalaModel
     
     Player currPlayer;
     
+    int PlayerAUndos;
+    int PlayerBUndos;
+    
+    Stack<int[]> previousBoards;
+    
     public MancalaModel() 
     { 
 		
@@ -70,7 +77,7 @@ public class MancalaModel
     	
 		 board = new int[BOARD_SIZE];
 		 
-		 board[MancalaSlot.A1.getIndex()] = 8;
+		 board[MancalaSlot.A1.getIndex()] = 3;
 		 board[MancalaSlot.A2.getIndex()] = 3;
 		 board[MancalaSlot.A3.getIndex()] = 3;
 		 board[MancalaSlot.A4.getIndex()] = 3;
@@ -82,7 +89,7 @@ public class MancalaModel
 		 
 		 board[MancalaSlot.A7.getIndex()] = 0;
 		 
-		 board[MancalaSlot.B1.getIndex()] = 11;
+		 board[MancalaSlot.B1.getIndex()] = 3;
 		 board[MancalaSlot.B2.getIndex()] = 3;
 		 board[MancalaSlot.B3.getIndex()] = 3;
 		 board[MancalaSlot.B4.getIndex()] = 3;
@@ -91,15 +98,48 @@ public class MancalaModel
 		 
 			 // Player B score
 		 board[MancalaSlot.B7.getIndex()] = 0;
+		 
+		 PlayerAUndos = 3;
+		 PlayerBUndos = 3;
+		 
+		 previousBoards = new Stack<>();
+		 
     }
     
     public int[] getBoard() {
     	return this.board;
     }
     
+    public boolean undo() {
+    	
+    	
+    	if(previousBoards.size() < 1)
+    		return false;
+    	
+    	this.board = previousBoards.pop();
+    	
+    	
+    	swapPlayers();
+    	
+    	notifySlotListeners();
+    	
+    	return true;
+    }
+    
+    public void swapPlayers() {
+    	
+    	if(currPlayer == Player.PLAYERA)
+    		currPlayer = Player.PLAYERB;
+    	else 
+    		currPlayer = Player.PLAYERA;
+    	
+    }
+    
 	
 	// Returns ending slot
 	public void seedStones(MancalaSlot slot) {
+		
+		previousBoards.push(this.getBoard().clone());
 		
 		
 		Player player = currPlayer;
@@ -116,16 +156,16 @@ public class MancalaModel
     	
     	while(stones > 0) {
     		
-    		index = (index - 1);
+    		index = (index + 1);
     		
-    		if(index < 0)
-    			index = BOARD_SIZE-1;
+    		if(index == BOARD_SIZE)
+    			index = 0;
     			    		
     		if(index == MancalaSlot.B7.getIndex() && player == Player.PLAYERA ||
     		   index == MancalaSlot.A7.getIndex() && player == Player.PLAYERB) {
     			continue;
     		}
-    		
+    	 
     		board[index]++;
     		stones--;
     	}

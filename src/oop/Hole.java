@@ -9,6 +9,7 @@ public class Hole extends JComponent
 	
 	int stones;
     private static final int CIRCLE_SIZE = 20;
+    
 
     public Hole(int stones)
     {
@@ -23,7 +24,7 @@ public class Hole extends JComponent
     public void paintComponent(Graphics g)
     {
         Graphics2D g2 = (Graphics2D) g;
-        Ellipse2D.Double hole = new Ellipse2D.Double(0, 0, 200, 200);
+        Ellipse2D.Double hole = new Ellipse2D.Double(0, 0, 150, 150);
         g2.draw(hole);
         
         
