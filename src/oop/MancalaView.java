@@ -16,25 +16,35 @@ public class MancalaView extends JFrame
 {
     private MancalaModel model;
     private JButton undo;
+
+    private JLabel status;
     
     Board board;
 
     public MancalaView(MancalaModel model)
     {
         this.model = new MancalaModel();
-        
+
         setSize(2000, 800);
         //setLayout(new BorderLayout());
-        
+
         this.board = new Board(this.model.getBoard());
-        
-        
-        
+
         add(board, BorderLayout.CENTER);
-        
+
+        JPanel bottomPanel = new JPanel();
+
         undo = new JButton("Undo");
-        add(undo, BorderLayout.SOUTH);
-        
+
+        bottomPanel.add(undo);
+
+        status = new JLabel(this.model.getCurrPlayer());
+        bottomPanel.add(status);
+
+        add(bottomPanel, BorderLayout.SOUTH);
+
+
+
 
 
         //Goal goal1 = new Goal();
@@ -42,17 +52,18 @@ public class MancalaView extends JFrame
 
         //Goal goal2 = new Goal();
         //add(goal2);
-        
-        
+
+
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        
+
         setVisible(true);
     }
     
 
 
-    public void addUndoButton(ActionListener listener) {
+    public void addUndoButton(ActionListener listener)
+    {
     	undo.addActionListener(listener);
     }
 
@@ -60,6 +71,11 @@ public class MancalaView extends JFrame
     public void addMancalaHoleListener(MouseListener[] listeners) {
     	
     	this.board.addMancalaHoleListeners(listeners);
+    }
+
+    public JLabel getStatus()
+    {
+        return status;
     }
 
 }

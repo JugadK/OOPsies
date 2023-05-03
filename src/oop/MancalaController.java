@@ -17,17 +17,26 @@ public class MancalaController
 	  
 	MancalaModel model;
 	MancalaView view;
-	
+
+	// Takes in the view and the model
 	public MancalaController(MancalaModel model, MancalaView view) {
 		this.model = model;
 		this.view = view;
-		
+
+		// Get the view and add a listener for the hole
 		view.addMancalaHoleListener(createMouseListeners());
 		
 		model.addSlotChangeListener(new ChangeListener() {
             @Override
-            public void stateChanged(ChangeEvent e) {
+            public void stateChanged(ChangeEvent e)
+			{
             	System.out.println(Arrays.toString(model.getBoard()));
+
+				// Update the current status
+				view.getStatus().setText(model.getCurrPlayer());
+				view.getStatus().repaint();
+
+				// Get the stones from the updated model
                 view.board.paintHoles(model.getBoard());
                 view.board.repaint();
             }
@@ -38,6 +47,7 @@ public class MancalaController
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				// Pop from the stack
 				model.undo();
 			}
 		});
@@ -45,7 +55,8 @@ public class MancalaController
 	}
 	
 	
-	public void seedMancalaPit(MancalaSlot slot) {
+	public void seedMancalaPit(MancalaSlot slot)
+	{
 		
 		model.seedStones(slot);
 	}
@@ -61,7 +72,8 @@ public class MancalaController
 			
 			   listeners[i] = new MouseListener() {
 		            @Override
-		            public void mouseClicked(MouseEvent e) {
+		            public void mouseClicked(MouseEvent e)
+					{
 		                seedMancalaPit(slot);
 		            }
 

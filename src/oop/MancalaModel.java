@@ -19,14 +19,17 @@ public class MancalaModel
     // Mancalla, 2 goal end, 6 x 2 circles, each can hold 4 marbles max
     // A1, A2, A3, A4, A5, A6, B1, B2, B3, B4, B5, B6 are the circles respectively
 
-    // Maybe for data structure a HashMap of Integers? Where each "A1, A2" can be the key and the value is an Integer?
+    // Enums for the Players, Pits
 	
-	public enum Player {
+	public enum Player
+	{
 		PLAYERA,
 		PLAYERB
+
 	}
 	
-	public enum MancalaSlot {
+	public enum MancalaSlot
+	{
         A1(0), A2(1), A3(2), A4(3), A5(4), A6(5), A7(6),
         B1(7), B2(8), B3(9), B4(10), B5(11), B6(12), B7(13);
         
@@ -59,7 +62,9 @@ public class MancalaModel
 	final static int BOARD_SIZE = 14;
     
     private int[] board;
-    private ArrayList<ChangeListener> slotListeners;   
+    private ArrayList<ChangeListener> slotListeners;
+
+	private ArrayList<ChangeListener> listeners;
     
     Player currPlayer;
     
@@ -82,7 +87,7 @@ public class MancalaModel
 		 board[MancalaSlot.A3.getIndex()] = 3;
 		 board[MancalaSlot.A4.getIndex()] = 3;
 		 board[MancalaSlot.A5.getIndex()] = 3;
-		 board[MancalaSlot.A6.getIndex()] = 0;
+		 board[MancalaSlot.A6.getIndex()] = 3;
 		 
 		 // This will be the score for Player A. I'm thinking 
 		 //about just incrementing and then when it gets to 6 and then you +1, it will be 7 so it'll go to Player A
@@ -125,8 +130,14 @@ public class MancalaModel
     	
     	return true;
     }
+
+	public String getCurrPlayer()
+	{
+		return currPlayer.toString();
+	}
     
-    public void swapPlayers() {
+    public void swapPlayers()
+	{
     	
     	if(currPlayer == Player.PLAYERA)
     		currPlayer = Player.PLAYERB;
@@ -134,14 +145,14 @@ public class MancalaModel
     		currPlayer = Player.PLAYERA;
     	
     }
+
     
 	
 	// Returns ending slot
 	public void seedStones(MancalaSlot slot) {
 		
 		previousBoards.push(this.getBoard().clone());
-		
-		
+
 		Player player = currPlayer;
 		
 		if(player == Player.PLAYERB && slot.getIndex() < 7)
@@ -183,10 +194,16 @@ public class MancalaModel
 	
 	public void handlePlayerSwap(MancalaSlot slot) {
 		
-		if(currPlayer == Player.PLAYERA && slot != MancalaSlot.A7) 
+		if(currPlayer == Player.PLAYERA && slot != MancalaSlot.A7)
+		{
 			this.currPlayer = Player.PLAYERB;
+		}
 		else if (currPlayer == Player.PLAYERB && slot != MancalaSlot.B7)
+		{
 			this.currPlayer = Player.PLAYERA;
+		}
+
+		notifySlotListeners();
 	}
 	
 	public void handleEmptyLand(MancalaSlot slot) {
@@ -225,4 +242,5 @@ public class MancalaModel
 	public void addSlotChangeListener(ChangeListener listener) {
 		slotListeners.add(listener);
 	}
+
 }

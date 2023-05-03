@@ -6,5 +6,6 @@ public class MancalaTester
         MancalaModel model = new MancalaModel();
         MancalaView view = new MancalaView(model);
         MancalaController controller = new MancalaController(model, view);
+
     }
 }
