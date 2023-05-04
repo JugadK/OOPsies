@@ -73,6 +73,8 @@ public class MancalaModel
     
     Stack<int[]> previousBoards;
     
+    String style;
+    
     public MancalaModel() 
     { 
 		
@@ -111,8 +113,41 @@ public class MancalaModel
 		 
     }
     
+    public void setStartingStones(int startingStones) {
+    	 
+	 board[MancalaSlot.A1.getIndex()] = startingStones;
+	 board[MancalaSlot.A2.getIndex()] = startingStones;
+	 board[MancalaSlot.A3.getIndex()] = startingStones;
+	 board[MancalaSlot.A4.getIndex()] = startingStones;
+	 board[MancalaSlot.A5.getIndex()] = startingStones;
+	 board[MancalaSlot.A6.getIndex()] = startingStones;
+	 
+	 // This will be the score for Player A. I'm thinking 
+	 //about just incrementing and then when it gets to 6 and then you +1, it will be 7 so it'll go to Player A
+	 
+	 board[MancalaSlot.A7.getIndex()] = 0;
+	 
+	 board[MancalaSlot.B1.getIndex()] = startingStones;
+	 board[MancalaSlot.B2.getIndex()] = startingStones;
+	 board[MancalaSlot.B3.getIndex()] = startingStones;
+	 board[MancalaSlot.B4.getIndex()] = startingStones;
+	 board[MancalaSlot.B5.getIndex()] = startingStones;
+	 board[MancalaSlot.B6.getIndex()] = startingStones;
+	 
+		 // Player B score
+	 board[MancalaSlot.B7.getIndex()] = 0;
+	 
+     notifySlotListeners();
+
+    }
+    
     public int[] getBoard() {
     	return this.board;
+    }
+    
+    public void setStyle(String style) {
+    	
+    	this.style = style;
     }
     
     public boolean undo() {

@@ -37,6 +37,24 @@ public class MancalaController
 			}
 		});
 		 
+		 
+        this.view.confirmButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Set the starting slot size and style in the model
+                int startingStones = Integer.parseInt((String) view.startingSlotSizeCombo.getSelectedItem());
+                model.setStartingStones(startingStones);
+                String style = (String) view.styleCombo.getSelectedItem();
+                model.setStyle(style);
+
+                
+                // Close the dialog
+                view.optionsDialog.dispose();
+                
+                
+            }
+        });
+		
 	}
 	
 	
