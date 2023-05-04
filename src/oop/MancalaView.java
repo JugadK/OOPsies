@@ -11,7 +11,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 import java.util.Arrays;
-
 // This IS a JFrame
 public class MancalaView extends JFrame
 {
@@ -23,7 +22,7 @@ public class MancalaView extends JFrame
     public JButton confirmButton;
     
     JComboBox<String> startingSlotSizeCombo;
-    JComboBox<String> styleCombo;
+    JComboBox<Style> styleCombo;
     JDialog optionsDialog;
     
     Board board;
@@ -45,7 +44,7 @@ public class MancalaView extends JFrame
         optionsDialog.add(startingSlotSizeCombo);
 
         // Add a combo box for choosing the style
-        String[] styles = {"A", "B"};
+        Style[] styles = {new UbuntuStyle(), new BlackAndWhiteStyle(), new RedStyle(), };
         styleCombo = new JComboBox<>(styles);
         JLabel styleLabel = new JLabel("Style:");
         optionsDialog.add(styleLabel);
@@ -92,12 +91,16 @@ public class MancalaView extends JFrame
                 board.repaint();
             }
         });
+		
+		model.addStyleChangeListener(new ChangeListener() {
+			
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				
+				model.style.applyStyle(board);
+			}
+		});
 
-        //Goal goal1 = new Goal();
-        //add(goal1);
-
-        //Goal goal2 = new Goal();
-        //add(goal2);
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         

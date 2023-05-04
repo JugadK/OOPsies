@@ -10,6 +10,9 @@ public class Board extends JPanel {
 
     // Array of Holes
     private Hole[] holes;
+    
+    
+    JPanel holesPanel;
 
     public Board(int[] board)
     {
@@ -17,7 +20,7 @@ public class Board extends JPanel {
         holes = new Hole[14];
         setLayout(new BorderLayout());
 
-        JPanel holesPanel = new JPanel(new GridLayout(2, 6));
+        holesPanel = new JPanel(new GridLayout(2, 6));
 
         // Loop to make the holes, starting from Player B
         for (int i = 13; i > 6; i--)

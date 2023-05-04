@@ -41,9 +41,9 @@ public class Hole extends JComponent
         {
         	for(int j = 0; j < 5 && stonesAdded < stones; j++)
             {
-        		 g2.setColor(Color.GRAY);
+        		 //g2.setColor(Color.GRAY);
                  g2.fillOval(x, y, CIRCLE_SIZE, CIRCLE_SIZE);
-                 g2.setColor(Color.WHITE);
+                 //g2.setColor(Color.WHITE);
                  g2.drawOval(x, y, CIRCLE_SIZE, CIRCLE_SIZE);
                  x += CIRCLE_SIZE;
              	stonesAdded++;

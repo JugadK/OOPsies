@@ -43,9 +43,7 @@ public class Goal extends Hole
                         
         for(int i = 0; i < stones && stonesAdded < stones; i++) {
         	
-        	g2.setColor(Color.GRAY);
             g2.fillOval(x, y, CIRCLE_SIZE, CIRCLE_SIZE);
-            g2.setColor(Color.WHITE);
             g2.drawOval(x, y, CIRCLE_SIZE, CIRCLE_SIZE);
          	stonesAdded++;
         	

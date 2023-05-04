@@ -65,6 +65,10 @@ public class MancalaModel
     private ArrayList<ChangeListener> slotListeners;
 
 	private ArrayList<ChangeListener> listeners;
+	
+	ChangeListener styleListener;
+	ChangeListener styleSetListener;
+
     
     Player currPlayer;
     
@@ -73,7 +77,7 @@ public class MancalaModel
     
     Stack<int[]> previousBoards;
     
-    String style;
+    Style style;
     
     public MancalaModel() 
     { 
@@ -114,30 +118,30 @@ public class MancalaModel
     }
     
     public void setStartingStones(int startingStones) {
-    	 
-	 board[MancalaSlot.A1.getIndex()] = startingStones;
-	 board[MancalaSlot.A2.getIndex()] = startingStones;
-	 board[MancalaSlot.A3.getIndex()] = startingStones;
-	 board[MancalaSlot.A4.getIndex()] = startingStones;
-	 board[MancalaSlot.A5.getIndex()] = startingStones;
-	 board[MancalaSlot.A6.getIndex()] = startingStones;
-	 
-	 // This will be the score for Player A. I'm thinking 
-	 //about just incrementing and then when it gets to 6 and then you +1, it will be 7 so it'll go to Player A
-	 
-	 board[MancalaSlot.A7.getIndex()] = 0;
-	 
-	 board[MancalaSlot.B1.getIndex()] = startingStones;
-	 board[MancalaSlot.B2.getIndex()] = startingStones;
-	 board[MancalaSlot.B3.getIndex()] = startingStones;
-	 board[MancalaSlot.B4.getIndex()] = startingStones;
-	 board[MancalaSlot.B5.getIndex()] = startingStones;
-	 board[MancalaSlot.B6.getIndex()] = startingStones;
-	 
-		 // Player B score
-	 board[MancalaSlot.B7.getIndex()] = 0;
-	 
-     notifySlotListeners();
+		 
+		board[MancalaSlot.A1.getIndex()] = startingStones;
+		board[MancalaSlot.A2.getIndex()] = startingStones;
+		board[MancalaSlot.A3.getIndex()] = startingStones;
+		board[MancalaSlot.A4.getIndex()] = startingStones;
+		board[MancalaSlot.A5.getIndex()] = startingStones;
+		board[MancalaSlot.A6.getIndex()] = startingStones;
+		 
+		// This will be the score for Player A. I'm thinking 
+		//about just incrementing and then when it gets to 6 and then you +1, it will be 7 so it'll go to Player A
+		 
+		board[MancalaSlot.A7.getIndex()] = 0;
+		 
+		board[MancalaSlot.B1.getIndex()] = startingStones;
+		board[MancalaSlot.B2.getIndex()] = startingStones;
+		board[MancalaSlot.B3.getIndex()] = startingStones;
+		board[MancalaSlot.B4.getIndex()] = startingStones;
+		board[MancalaSlot.B5.getIndex()] = startingStones;
+		board[MancalaSlot.B6.getIndex()] = startingStones;
+		 
+			 // Player B score
+		board[MancalaSlot.B7.getIndex()] = 0;
+		 
+		notifySlotListeners();
 
     }
     
@@ -145,9 +149,11 @@ public class MancalaModel
     	return this.board;
     }
     
-    public void setStyle(String style) {
+    public void setStyle(Style style) {
     	
     	this.style = style;
+    	
+    	notifyStyleChangeListener();
     }
     
     public boolean undo() {
@@ -284,9 +290,27 @@ public class MancalaModel
 	public void notifySlotListeners() {
 		
 		ChangeEvent event = new ChangeEvent(this);
+		
     	for(ChangeListener l : slotListeners) {
     		l.stateChanged(event);
     	}
+	}
+	
+	public void notifyStyleChangeListener() {
+		
+		ChangeEvent event = new ChangeEvent(this);
+		
+		styleListener.stateChanged(event);
+		
+	}
+	
+	
+	public void addStyleSetListener(ChangeListener listener) {
+		styleSetListener = listener;
+	}
+	
+	public void addStyleChangeListener(ChangeListener listener) {
+		styleListener = listener;
 	}
 	
 	public void addSlotChangeListener(ChangeListener listener) {
