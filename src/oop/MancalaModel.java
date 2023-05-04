@@ -117,6 +117,20 @@ public class MancalaModel
     
     public boolean undo() {
     	
+    	if(currPlayer == Player.PLAYERA) {
+    		if(PlayerBUndos == 0) {
+    			return false;
+    		} else {
+    			PlayerBUndos--;
+    		}
+    	}
+    	
+    	if(currPlayer == Player.PLAYERB) {
+    		if(PlayerAUndos == 0)
+    			return false;
+    		else
+    			PlayerAUndos--;
+    	}
     	
     	if(previousBoards.size() < 1)
     		return false;
@@ -146,6 +160,7 @@ public class MancalaModel
     	
     }
 
+    
     
 	
 	// Returns ending slot

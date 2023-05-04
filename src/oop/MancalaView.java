@@ -44,16 +44,11 @@ public class MancalaView extends JFrame
         add(bottomPanel, BorderLayout.SOUTH);
 
 
-
-
-
         //Goal goal1 = new Goal();
         //add(goal1);
 
         //Goal goal2 = new Goal();
         //add(goal2);
-
-
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
