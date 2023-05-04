@@ -44,6 +44,22 @@ public class MancalaView extends JFrame
         add(bottomPanel, BorderLayout.SOUTH);
 
 
+		model.addSlotChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e)
+			{
+            	System.out.println(Arrays.toString(model.getBoard()));
+
+				// Update the current status
+				getStatus().setText(model.getCurrPlayer());
+				getStatus().repaint();
+
+				// Get the stones from the updated model
+                board.paintHoles(model.getBoard());
+                board.repaint();
+            }
+        });
+
         //Goal goal1 = new Goal();
         //add(goal1);
 

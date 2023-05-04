@@ -26,21 +26,6 @@ public class MancalaController
 		// Get the view and add a listener for the hole
 		view.addMancalaHoleListener(createMouseListeners());
 		
-		model.addSlotChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e)
-			{
-            	System.out.println(Arrays.toString(model.getBoard()));
-
-				// Update the current status
-				view.getStatus().setText(model.getCurrPlayer());
-				view.getStatus().repaint();
-
-				// Get the stones from the updated model
-                view.board.paintHoles(model.getBoard());
-                view.board.repaint();
-            }
-        });
 	
 		view.addUndoButton(new ActionListener() {
 
