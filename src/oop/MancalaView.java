@@ -43,7 +43,6 @@ public class MancalaView extends JFrame
         this.model = new MancalaModel();
 
         setSize(1800, 800);
-        //setLayout(new BorderLayout());
         
         optionsDialog = new JDialog(this, "Options", false);
         optionsDialog.setLayout(new GridLayout(0, 2));
@@ -66,7 +65,6 @@ public class MancalaView extends JFrame
         
         optionsDialog.add(confirmButton);
 
-        
         optionsDialog.pack();
         optionsDialog.setLocationRelativeTo(this);
         optionsDialog.setVisible(true);
@@ -75,6 +73,8 @@ public class MancalaView extends JFrame
         this.board = new Board(this.model.getBoard());
 
         add(board, BorderLayout.CENTER);
+        
+        board.repaint();
 
         JPanel bottomPanel = new JPanel();
         
@@ -124,8 +124,7 @@ public class MancalaView extends JFrame
         
 
         setVisible(true);
-        
-    }
+     }
     
 
 	/**
@@ -138,11 +137,10 @@ public class MancalaView extends JFrame
     }
 
     /**
-     * Adds MouseListeners to the mancala holes on the board.
+     * Adds MouseListeners to the Mancala holes on the board.
      * @param listeners An array of MouseListeners to add.
      */
     public void addMancalaHoleListener(MouseListener[] listeners) {
-    	
     	this.board.addMancalaHoleListeners(listeners);
     }
     

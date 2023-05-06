@@ -48,6 +48,8 @@ public class Board extends JPanel {
             {
             	holes[i] = new Goal(board[i], "Mancala B");
             	add(holes[i], BorderLayout.WEST);
+            	holes[i].setPreferredSize(new Dimension(100, 2000));
+
             }
             
         }
@@ -70,6 +72,7 @@ public class Board extends JPanel {
             {
             	holes[i] = new Goal(board[i], "Mancala A");
             	add(holes[i], BorderLayout.EAST);
+            	holes[i].setPreferredSize(new Dimension(100, 2000));
             }
         }
 
@@ -78,6 +81,7 @@ public class Board extends JPanel {
         boardPanel.add(holesPanel, BorderLayout.CENTER);
 
         add(boardPanel, BorderLayout.CENTER);
+        
         
         // Recalculate the layout and repaint the components
         // This fixes the mancala boards not showing up sometimes

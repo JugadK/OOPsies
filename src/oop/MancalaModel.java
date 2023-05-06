@@ -160,10 +160,12 @@ public class MancalaModel
     public void setStartingStones(int startingStones) {
 		 
     	
+    	 startingStones = 0;
+    	
 	   	 board[MancalaSlot.A1.getIndex()] = startingStones;
 		 board[MancalaSlot.A2.getIndex()] = startingStones;
-		 board[MancalaSlot.A3.getIndex()] = startingStones;
-		 board[MancalaSlot.A4.getIndex()] = startingStones;
+		 board[MancalaSlot.A3.getIndex()] = 10;
+		 board[MancalaSlot.A4.getIndex()] = 1;
 		 board[MancalaSlot.A5.getIndex()] = startingStones;
 		 board[MancalaSlot.A6.getIndex()] = startingStones;
 		 
@@ -175,7 +177,7 @@ public class MancalaModel
 		 board[MancalaSlot.B1.getIndex()] = startingStones;
 		 board[MancalaSlot.B2.getIndex()] = startingStones;
 		 board[MancalaSlot.B3.getIndex()] = startingStones;
-		 board[MancalaSlot.B4.getIndex()] = startingStones;
+		 board[MancalaSlot.B4.getIndex()] = 2;
 		 board[MancalaSlot.B5.getIndex()] = startingStones;
 		 board[MancalaSlot.B6.getIndex()] = startingStones;
 		 
@@ -429,18 +431,22 @@ public class MancalaModel
 	    Player player = currPlayer;
 	    
 	    if (stones == 1 && index != MancalaSlot.A7.getIndex() && index != MancalaSlot.B7.getIndex()) {
+	    	
+	    	System.out.println(index + " Index");
+	    	System.out.println(board[BOARD_SIZE - index - 2] + " " + "Opposite");
+	    	System.out.println(board[0]);
 	    		    	
-	        if (player == Player.PLAYERA && index < 7 && board[BOARD_SIZE - index - 2] > 0) {
+	        if (player == Player.PLAYERA && index < 7 && board[BOARD_SIZE - index - 2] >= 0) {
 	        	
 	            // move stone from opposite pit to player A's mancala
 	            board[MancalaSlot.A7.getIndex()] += board[BOARD_SIZE - index - 2] + 1;
 	            board[BOARD_SIZE - index - 2] = 0;
 	            board[index] = 0;
-	        } else if (player == Player.PLAYERB && index > 6 && board[BOARD_SIZE - index] > 0) {
+	        } else if (player == Player.PLAYERB && index > 6 && board[BOARD_SIZE - index - 2] >= 0) {
 	        	
 	            // move stone from opposite pit to player B's mancala
-	            board[MancalaSlot.B7.getIndex()] += board[BOARD_SIZE - index] + 1;
-	            board[BOARD_SIZE - index] = 0;
+	            board[MancalaSlot.B7.getIndex()] += board[BOARD_SIZE - index - 2] + 1;
+	            board[BOARD_SIZE - index - 2] = 0;
 	            board[index] = 0;
 	        }
 	    }
