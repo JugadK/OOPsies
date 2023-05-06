@@ -159,13 +159,11 @@ public class MancalaModel
      */
     public void setStartingStones(int startingStones) {
 		 
-    	
-    	 startingStones = 0;
-    	
+    	    	
 	   	 board[MancalaSlot.A1.getIndex()] = startingStones;
 		 board[MancalaSlot.A2.getIndex()] = startingStones;
-		 board[MancalaSlot.A3.getIndex()] = 10;
-		 board[MancalaSlot.A4.getIndex()] = 1;
+		 board[MancalaSlot.A3.getIndex()] = startingStones;
+		 board[MancalaSlot.A4.getIndex()] = startingStones;
 		 board[MancalaSlot.A5.getIndex()] = startingStones;
 		 board[MancalaSlot.A6.getIndex()] = startingStones;
 		 
@@ -177,7 +175,7 @@ public class MancalaModel
 		 board[MancalaSlot.B1.getIndex()] = startingStones;
 		 board[MancalaSlot.B2.getIndex()] = startingStones;
 		 board[MancalaSlot.B3.getIndex()] = startingStones;
-		 board[MancalaSlot.B4.getIndex()] = 2;
+		 board[MancalaSlot.B4.getIndex()] = startingStones;
 		 board[MancalaSlot.B5.getIndex()] = startingStones;
 		 board[MancalaSlot.B6.getIndex()] = startingStones;
 		 
