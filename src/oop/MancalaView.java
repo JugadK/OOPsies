@@ -12,6 +12,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 import java.util.Arrays;
 // This IS a JFrame
+
+/**
+ * 
+ * @author jewgad
+ * View for the Mancala
+ */
 public class MancalaView extends JFrame
 {
     private MancalaModel model;
@@ -27,6 +33,11 @@ public class MancalaView extends JFrame
     
     Board board;
 
+    /**
+     * Constructs a new MancalaView object with the given model.
+     *
+     * @param model The model that this view is associated with.
+     */
     public MancalaView(MancalaModel model)
     {
         this.model = new MancalaModel();
@@ -117,18 +128,28 @@ public class MancalaView extends JFrame
     }
     
 
-
+	/**
+	 * Adds an ActionListener to the undo button.
+	 * @param listener The ActionListener to add.
+	 */
     public void addUndoButton(ActionListener listener)
     {
     	undo.addActionListener(listener);
     }
 
-    
+    /**
+     * Adds MouseListeners to the mancala holes on the board.
+     * @param listeners An array of MouseListeners to add.
+     */
     public void addMancalaHoleListener(MouseListener[] listeners) {
     	
     	this.board.addMancalaHoleListeners(listeners);
     }
-
+    
+    /**
+     * Returns the JLabel that displays the current status of the game.
+     * @return The JLabel that displays the current status of the game.
+     */
     public JLabel getStatus()
     {
         return status;

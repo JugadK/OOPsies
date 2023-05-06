@@ -13,6 +13,11 @@ import javax.swing.event.ChangeEvent;
 import oop.MancalaModel.MancalaSlot;
 import oop.MancalaModel.Player;
 
+/**
+ * 
+ * @author Jugad Khajuria
+ * model for the Mancala, stores all data related to it
+ */
 public class MancalaModel 
 {
 
@@ -28,6 +33,12 @@ public class MancalaModel
 
 	}
 	
+	
+	/**
+	 * 
+	 * @author jewgad
+	 * An enum class used to represent each individual hole in the slot
+	 */
 	public static enum MancalaSlot
 	{
         A1(0), A2(1), A3(2), A4(3), A5(4), A6(5), A7(6),
@@ -79,6 +90,11 @@ public class MancalaModel
     int PlayerAUndos;
     int PlayerBUndos;
     
+    /**
+     * 
+     * @author jewgad
+     * Class that holds Mancala Board State
+     */
     class MancalaState {
     	
     	public int[] board;
@@ -93,7 +109,10 @@ public class MancalaModel
     Stack<MancalaState> previousStates;
     
     Style style;
-    
+   
+    /**
+     * Mancala Constructor
+     */
     public MancalaModel() 
     { 
 		
@@ -134,6 +153,10 @@ public class MancalaModel
 		 
     }
     
+    /**
+     * set starting stones of the Mancala board
+     * @param startingStones - int that tells the board how many stones to start with
+     */
     public void setStartingStones(int startingStones) {
 		 
     	
@@ -190,10 +213,18 @@ public class MancalaModel
 
     }
     
+    /**
+     * 
+     * @return current Board
+     */
     public int[] getBoard() {
     	return this.board;
     }
     
+    /**
+     * Set Board Style
+     * @param style 
+     */
     public void setStyle(Style style) {
     	
     	this.style = style;
@@ -201,6 +232,10 @@ public class MancalaModel
     	notifyStyleChangeListener();
     }
     
+    /**
+     * undos the last action if its a valid move
+     * @return whether the undo was successful 
+     */
     public boolean undo() {
     	    	
     	if(hasUndoHappened)
@@ -236,11 +271,17 @@ public class MancalaModel
     	return true;
     }
 
+    /**
+     * @return current Player
+     */
 	public String getCurrPlayer()
 	{
 		return currPlayer.toString();
 	}
     
+	/**
+	 * Swaps current Player with the other Player
+	 */
     public void swapPlayers()
 	{
     	
@@ -253,8 +294,10 @@ public class MancalaModel
 
     
     
-	
-	// Returns ending slot
+	/**
+	 * seeds stones in mancala board
+	 * @param slot - slot the seed ends on
+	 */
 	public void seedStones(MancalaSlot slot) {
 		
 		previousStates.push(new MancalaState(currPlayer, this.getBoard().clone()));
@@ -302,10 +345,10 @@ public class MancalaModel
 
 	}
 	
-	public void alertPlayerWin(Player player) {
-		
-	}
-	
+
+	/**
+	 * Detects if current board means a player won
+	 */
 	public void detectWin() {
 		
 		if(
@@ -358,9 +401,10 @@ public class MancalaModel
 		}
 	}
 	
-	
-	
-	
+	/**
+	 * handles swapping players if the seed ends on a Mancala
+	 * @param slot
+	 */
 	public void handlePlayerSwap(MancalaSlot slot) {
 		
 		if(currPlayer == Player.PLAYERA && slot != MancalaSlot.A7)
@@ -375,15 +419,17 @@ public class MancalaModel
 		notifySlotListeners();
 	}
 	
+	/**
+	 * handles game logic when the user ends on an empty hole
+	 * @param slot - The slot that the seed ended on
+	 */
 	public void handleEmptyLand(MancalaSlot slot) {
 	    int index = slot.getIndex();
 	    int stones = board[index];
 	    Player player = currPlayer;
 	    
 	    if (stones == 1 && index != MancalaSlot.A7.getIndex() && index != MancalaSlot.B7.getIndex()) {
-	    	
-	    	System.out.println("dfasdfa");
-	    	
+	    		    	
 	        if (player == Player.PLAYERA && index < 7 && board[BOARD_SIZE - index - 2] > 0) {
 	        	
 	            // move stone from opposite pit to player A's mancala
@@ -400,6 +446,9 @@ public class MancalaModel
 	    }
 	}
 	
+	/**
+	 * Notifies slot listeners
+	 */
 	public void notifySlotListeners() {
 		
 		ChangeEvent event = new ChangeEvent(this);
@@ -409,6 +458,9 @@ public class MancalaModel
     	}
 	}
 	
+	/**
+	 * Notifies style change listeners
+	 */
 	public void notifyStyleChangeListener() {
 		
 		ChangeEvent event = new ChangeEvent(this);
@@ -417,15 +469,25 @@ public class MancalaModel
 		
 	}
 	
-	
+	/**
+	 * @param listener - listener that sets style
+	 */
 	public void addStyleSetListener(ChangeListener listener) {
 		styleSetListener = listener;
 	}
 	
+	/**
+	 * adds a listener that should run when the style has changed
+	 * @param listener - listener that runs when a style changes
+	 */
 	public void addStyleChangeListener(ChangeListener listener) {
 		styleListener = listener;
 	}
 	
+	/**
+	 * add listeners that should run when the board slots have changed
+	 * @param listener 
+	 */
 	public void addSlotChangeListener(ChangeListener listener) {
 		slotListeners.add(listener);
 	}

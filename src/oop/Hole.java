@@ -4,6 +4,11 @@ import java.awt.*;
 import java.awt.event.MouseListener;
 import java.awt.geom.Ellipse2D;
 
+/**
+ * 
+ * @author jewgad
+ * JComponent that represents the mancala hole in the UI
+ */
 public class Hole extends JComponent
 {
 	
@@ -11,18 +16,29 @@ public class Hole extends JComponent
 	String name;
     private static final int CIRCLE_SIZE = 20;
     
-
+    /**
+     * Constructor for the Hole
+     * @param stones - number of stones in the hole
+     * @param name - name that is printed on the hole
+     */
     public Hole(int stones, String name)
     {
     	this.stones = stones;
     	this.name = name;
     }
     
+    /**
+     * update number of stones
+     * @param stones - number of stones inside the hole
+     */
     public void updateStones(int stones)
     {
     	this.stones = stones;
     }
     
+    /**
+     * Paints the componenet
+     */
     @Override
     public void paintComponent(Graphics g)
     {

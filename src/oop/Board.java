@@ -6,6 +6,11 @@ import oop.MancalaModel.MancalaSlot;
 import java.awt.*;
 import java.awt.event.MouseListener;
 
+/**
+ * 
+ * @author jewgad
+ * Class that handles the ui for the Board 
+ */
 public class Board extends JPanel {
 
     // Array of Holes
@@ -14,6 +19,10 @@ public class Board extends JPanel {
     
     JPanel holesPanel;
 
+    /**
+     * constructor for the Board
+     * @param board - a 14 size array that represents the mancala board
+     */
     public Board(int[] board)
     {
         // 2 x 6 holes, the remaining is for the goals
@@ -76,7 +85,10 @@ public class Board extends JPanel {
         repaint();
     }
 
-    // Repaint the holes from the updated model
+    /**
+     * repaint hole with updates values 
+     * @param js - 14 size array that stores the values
+     */
     public void paintHoles(int[] js)
     {
         for (int i = 0; i < 14; i++)
@@ -86,6 +98,10 @@ public class Board extends JPanel {
         }
     }
 
+    /**
+     * adds listeners to each of the mancala holes
+     * @param listeners - array of listeners that can be assigned to each slot;
+     */
     public void addMancalaHoleListeners(MouseListener[] listeners) {
         for (int i = 0; i < 14; i++)
         {

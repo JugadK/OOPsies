@@ -12,13 +12,22 @@ import javax.swing.event.ChangeListener;
 import oop.MancalaModel.MancalaSlot;
 import oop.MancalaModel.Player;
 
+/**
+ * 
+ * @author jewgad
+ * Controller that handles state changes in the model form the view
+ */
 public class MancalaController
 {
 	  
 	MancalaModel model;
 	MancalaView view;
 
-	// Takes in the view and the model
+	/**
+	 * Constructor for the controller
+	 * @param model - model attached to the controller
+	 * @param view - view attached to the controller
+	 */
 	public MancalaController(MancalaModel model, MancalaView view) {
 		this.model = model;
 		this.view = view;
@@ -60,13 +69,20 @@ public class MancalaController
 		
 	}
 	
-	
+	/**
+	 * tells model to seed starting form a mancala pit
+	 * @param slot - slot the mancala pit starts at
+	 */
 	public void seedMancalaPit(MancalaSlot slot)
 	{
 		
 		model.seedStones(slot);
 	}
 	
+	/**
+	 * creates mouselisteners for all of the mancala holes
+	 * @return an array of 14 with a listener for each mancala hole
+	 */
 	public MouseListener[] createMouseListeners() {
 		
 		MouseListener[] listeners = new MouseListener[14];

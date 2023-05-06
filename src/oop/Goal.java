@@ -4,6 +4,11 @@ import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 
+/**
+ * 
+ * @author jewgad
+ * Class that handles creating the Mancala Holes
+ */
 public class Goal extends Hole
 {
 	
@@ -11,7 +16,11 @@ public class Goal extends Hole
 	String name;
     private static final int CIRCLE_SIZE = 20;
 
-
+    /**
+     * constructor for Goal
+     * @param stones - number of stones that should be inside the goal
+     * @param name - name that should be printed inside the goal
+     */
     public Goal(int stones, String name)
     {
     	super(stones, name);
@@ -19,10 +28,17 @@ public class Goal extends Hole
     	this.name = name;
     }
     
+    /**
+     * update the number of stones in goal
+     */
     public void updateStones(int stones) {
     	this.stones = stones;
     }
 
+    /**
+     * paint the component
+     * @param - Graphics g
+     */
     @Override
     public void paintComponent(Graphics g)
     {
@@ -52,9 +68,6 @@ public class Goal extends Hole
         	
         	y += CIRCLE_SIZE;
         }
-
     }
-
-
 }
 
