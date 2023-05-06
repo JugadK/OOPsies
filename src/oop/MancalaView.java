@@ -31,7 +31,7 @@ public class MancalaView extends JFrame
     {
         this.model = new MancalaModel();
 
-        setSize(2000, 800);
+        setSize(1800, 800);
         //setLayout(new BorderLayout());
         
         optionsDialog = new JDialog(this, "Options", false);
@@ -66,6 +66,8 @@ public class MancalaView extends JFrame
         add(board, BorderLayout.CENTER);
 
         JPanel bottomPanel = new JPanel();
+        
+        bottomPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 
         undo = new JButton("Undo");
 
@@ -75,7 +77,7 @@ public class MancalaView extends JFrame
         bottomPanel.add(status);
 
         add(bottomPanel, BorderLayout.SOUTH);
-
+        
 		model.addSlotChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e)
@@ -84,6 +86,11 @@ public class MancalaView extends JFrame
 
 				// Update the current status
 				getStatus().setText(model.getCurrPlayer());
+				
+				if(model.winningPlayer != null) {
+					getStatus().setText(model.winningPlayer);
+				}
+				
 				getStatus().repaint();
 
 				// Get the stones from the updated model

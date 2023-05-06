@@ -28,7 +28,7 @@ public class MancalaModel
 
 	}
 	
-	public enum MancalaSlot
+	public static enum MancalaSlot
 	{
         A1(0), A2(1), A3(2), A4(3), A5(4), A6(5), A7(6),
         B1(7), B2(8), B3(9), B4(10), B5(11), B6(12), B7(13);
@@ -57,6 +57,8 @@ public class MancalaModel
         	return slot;
         }
     }
+	
+	boolean hasUndoHappened;
 
 	
 	final static int BOARD_SIZE = 14;
@@ -68,6 +70,8 @@ public class MancalaModel
 	
 	ChangeListener styleListener;
 	ChangeListener styleSetListener;
+	
+	String winningPlayer;
 
     
     Player currPlayer;
@@ -75,7 +79,18 @@ public class MancalaModel
     int PlayerAUndos;
     int PlayerBUndos;
     
-    Stack<int[]> previousBoards;
+    class MancalaState {
+    	
+    	public int[] board;
+    	public Player player;
+    	
+    	public MancalaState(Player player, int[] board) {
+    		this.board = board;
+    		this.player = player;
+    	}
+    }
+    
+    Stack<MancalaState> previousStates;
     
     Style style;
     
@@ -85,6 +100,8 @@ public class MancalaModel
     	 this.slotListeners = new ArrayList<>();
     	 
     	 this.currPlayer = Player.PLAYERA;
+    	 
+    	 hasUndoHappened = false;
     	
 		 board = new int[BOARD_SIZE];
 		 
@@ -113,33 +130,61 @@ public class MancalaModel
 		 PlayerAUndos = 3;
 		 PlayerBUndos = 3;
 		 
-		 previousBoards = new Stack<>();
+		 previousStates = new Stack<>();
 		 
     }
     
     public void setStartingStones(int startingStones) {
 		 
-		board[MancalaSlot.A1.getIndex()] = startingStones;
-		board[MancalaSlot.A2.getIndex()] = startingStones;
-		board[MancalaSlot.A3.getIndex()] = startingStones;
-		board[MancalaSlot.A4.getIndex()] = startingStones;
-		board[MancalaSlot.A5.getIndex()] = startingStones;
-		board[MancalaSlot.A6.getIndex()] = startingStones;
+    	
+	   	 board[MancalaSlot.A1.getIndex()] = startingStones;
+		 board[MancalaSlot.A2.getIndex()] = startingStones;
+		 board[MancalaSlot.A3.getIndex()] = startingStones;
+		 board[MancalaSlot.A4.getIndex()] = startingStones;
+		 board[MancalaSlot.A5.getIndex()] = startingStones;
+		 board[MancalaSlot.A6.getIndex()] = startingStones;
+		 
+		 // This will be the score for Player A. I'm thinking 
+		 //about just incrementing and then when it gets to 6 and then you +1, it will be 7 so it'll go to Player A
+		 
+		 board[MancalaSlot.A7.getIndex()] = 0;
+		 
+		 board[MancalaSlot.B1.getIndex()] = startingStones;
+		 board[MancalaSlot.B2.getIndex()] = startingStones;
+		 board[MancalaSlot.B3.getIndex()] = startingStones;
+		 board[MancalaSlot.B4.getIndex()] = startingStones;
+		 board[MancalaSlot.B5.getIndex()] = startingStones;
+		 board[MancalaSlot.B6.getIndex()] = startingStones;
+		 
+			 // Player B score
+		 board[MancalaSlot.B7.getIndex()] = 0;
+    	
+    	
+    	// use this too test starting stones;
+		 
+		/*board[MancalaSlot.A1.getIndex()] = 0;
+		board[MancalaSlot.A2.getIndex()] = 0;
+		board[MancalaSlot.A3.getIndex()] = 0;
+		board[MancalaSlot.A4.getIndex()] = 0;
+		board[MancalaSlot.A5.getIndex()] = 0;
+		board[MancalaSlot.A6.getIndex()] = 3;
 		 
 		// This will be the score for Player A. I'm thinking 
 		//about just incrementing and then when it gets to 6 and then you +1, it will be 7 so it'll go to Player A
 		 
 		board[MancalaSlot.A7.getIndex()] = 0;
 		 
-		board[MancalaSlot.B1.getIndex()] = startingStones;
-		board[MancalaSlot.B2.getIndex()] = startingStones;
-		board[MancalaSlot.B3.getIndex()] = startingStones;
-		board[MancalaSlot.B4.getIndex()] = startingStones;
-		board[MancalaSlot.B5.getIndex()] = startingStones;
-		board[MancalaSlot.B6.getIndex()] = startingStones;
+		board[MancalaSlot.B1.getIndex()] = 0;
+		board[MancalaSlot.B2.getIndex()] = 0;
+		board[MancalaSlot.B3.getIndex()] = 0;
+		board[MancalaSlot.B4.getIndex()] = 0;
+		board[MancalaSlot.B5.getIndex()] = 0;
+		board[MancalaSlot.B6.getIndex()] = 0;
 		 
 			 // Player B score
-		board[MancalaSlot.B7.getIndex()] = 0;
+		board[MancalaSlot.B7.getIndex()] = 0; */
+    	
+    	
 		 
 		notifySlotListeners();
 
@@ -157,6 +202,9 @@ public class MancalaModel
     }
     
     public boolean undo() {
+    	    	
+    	if(hasUndoHappened)
+    		return false;
     	
     	if(currPlayer == Player.PLAYERA) {
     		if(PlayerBUndos == 0) {
@@ -173,15 +221,17 @@ public class MancalaModel
     			PlayerAUndos--;
     	}
     	
-    	if(previousBoards.size() < 1)
+    	if(previousStates.size() < 1)
     		return false;
     	
-    	this.board = previousBoards.pop();
+    	MancalaState state = previousStates.pop();
     	
-    	
-    	swapPlayers();
-    	
+    	this.board = state.board;
+    	this.currPlayer = state.player;
+    	    	
     	notifySlotListeners();
+    	
+    	hasUndoHappened = true;
     	
     	return true;
     }
@@ -207,7 +257,7 @@ public class MancalaModel
 	// Returns ending slot
 	public void seedStones(MancalaSlot slot) {
 		
-		previousBoards.push(this.getBoard().clone());
+		previousStates.push(new MancalaState(currPlayer, this.getBoard().clone()));
 
 		Player player = currPlayer;
 		
@@ -245,7 +295,70 @@ public class MancalaModel
     	notifySlotListeners();
 
     	handlePlayerSwap(mSlot);
+    	
+    	hasUndoHappened = false;
+    	
+    	detectWin();
+
 	}
+	
+	public void alertPlayerWin(Player player) {
+		
+	}
+	
+	public void detectWin() {
+		
+		if(
+		(board[MancalaSlot.A1.getIndex()] == 0 &&
+		board[MancalaSlot.A2.getIndex()] == 0 &&
+		board[MancalaSlot.A3.getIndex()] == 0 &&
+		board[MancalaSlot.A4.getIndex()] == 0 &&
+		board[MancalaSlot.A5.getIndex()] == 0 &&
+		board[MancalaSlot.A6.getIndex()] == 0) 
+		|| 
+		(board[MancalaSlot.B1.getIndex()] == 0 &&
+		board[MancalaSlot.B2.getIndex()] == 0 &&
+		board[MancalaSlot.B3.getIndex()] == 0 &&
+		board[MancalaSlot.B4.getIndex()] == 0 &&
+		board[MancalaSlot.B5.getIndex()] == 0 &&
+		board[MancalaSlot.B6.getIndex()] == 0)
+		) {
+			
+			int bSum = board[13];
+			int aSum = board[6];
+			
+			
+			for(int i = 7; i < 13; i++) {
+				bSum += board[i];
+				board[i] = 0;
+
+			}
+			
+
+			for(int i = 0; i < 6; i++) {
+				aSum += board[i];
+				board[i] = 0;
+
+			}
+			
+			board[13] = bSum;
+			board[6] = aSum;
+			
+			
+			if(bSum > aSum) {
+				winningPlayer = "PLAYERB Wins";
+			} else if(aSum > bSum){
+				winningPlayer = "PLAYERA Wins";
+			} else {
+				winningPlayer = "Tie";
+			}
+			
+			notifySlotListeners();
+
+		}
+	}
+	
+	
 	
 	
 	public void handlePlayerSwap(MancalaSlot slot) {

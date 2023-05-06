@@ -8,13 +8,15 @@ public class Goal extends Hole
 {
 	
 	int stones;
+	String name;
     private static final int CIRCLE_SIZE = 20;
 
 
-    public Goal(int stones)
+    public Goal(int stones, String name)
     {
-    	super(stones);
+    	super(stones, name);
     	this.stones = stones;
+    	this.name = name;
     }
     
     public void updateStones(int stones) {
@@ -34,13 +36,14 @@ public class Goal extends Hole
         g2.draw(goal);
         
         
+        g2.setFont(new Font("Arial", Font.BOLD, 15));
+        g2.drawString(this.name, 10, 10);
+        
         int stonesAdded = 0;
         
         int x = 0;
         int y = 0;
-        
-        System.out.println(stones);
-                        
+                                
         for(int i = 0; i < stones && stonesAdded < stones; i++) {
         	
             g2.fillOval(x, y, CIRCLE_SIZE, CIRCLE_SIZE);

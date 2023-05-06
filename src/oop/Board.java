@@ -21,11 +21,11 @@ public class Board extends JPanel {
         setLayout(new BorderLayout());
 
         holesPanel = new JPanel(new GridLayout(2, 6));
-
+        
         // Loop to make the holes, starting from Player B
         for (int i = 13; i > 6; i--)
         {
-            Hole hole = new Hole(board[i]);
+            Hole hole = new Hole(board[i], MancalaModel.MancalaSlot.getEnum(i).toString());
             holes[i] = hole;
 
             // Add holes
@@ -37,7 +37,7 @@ public class Board extends JPanel {
             // Add the goal
             else
             {
-            	holes[i] = new Goal(board[i]);
+            	holes[i] = new Goal(board[i], "Mancala B");
             	add(holes[i], BorderLayout.WEST);
             }
             
@@ -47,7 +47,7 @@ public class Board extends JPanel {
         for (int i = 0; i < 7; i++)
         {
 
-            Hole hole = new Hole(board[i]);
+            Hole hole = new Hole(board[i], MancalaModel.MancalaSlot.getEnum(i).toString());
             holes[i] = hole;
 
             // Add holes
@@ -59,18 +59,21 @@ public class Board extends JPanel {
             // Add the goals
             else
             {
-            	holes[i] = new Goal(board[i]);
+            	holes[i] = new Goal(board[i], "Mancala A");
             	add(holes[i], BorderLayout.EAST);
             }
         }
 
         JPanel boardPanel = new JPanel(new BorderLayout());
-        
-        //boardPanel.setBackground(Color.BLACK);
-        
+                
         boardPanel.add(holesPanel, BorderLayout.CENTER);
 
         add(boardPanel, BorderLayout.CENTER);
+        
+        // Recalculate the layout and repaint the components
+        // This fixes the mancala boards not showing up sometimes
+        revalidate();
+        repaint();
     }
 
     // Repaint the holes from the updated model

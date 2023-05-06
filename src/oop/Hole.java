@@ -8,19 +8,21 @@ public class Hole extends JComponent
 {
 	
 	int stones;
+	String name;
     private static final int CIRCLE_SIZE = 20;
     
 
-    public Hole(int stones)
+    public Hole(int stones, String name)
     {
     	this.stones = stones;
+    	this.name = name;
     }
     
     public void updateStones(int stones)
     {
     	this.stones = stones;
     }
-
+    
     @Override
     public void paintComponent(Graphics g)
     {
@@ -29,6 +31,9 @@ public class Hole extends JComponent
         // The hole
         Ellipse2D.Double hole = new Ellipse2D.Double(0, 0, 150, 150);
         g2.draw(hole);
+        
+        g2.setFont(new Font("Arial", Font.BOLD, 15));
+        g2.drawString(this.name, 10, 10);
         
         
         int stonesAdded = 0;
